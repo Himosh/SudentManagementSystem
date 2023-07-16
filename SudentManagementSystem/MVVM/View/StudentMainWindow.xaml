@@ -1,0 +1,152 @@
+﻿<Window x:Class="SudentManagementSystem.MVVM.View.Student"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        
+        xmlns:local="clr-namespace:SudentManagementSystem.MVVM.ViewModel"
+        xmlns:local1="clr-namespace:SudentManagementSystem.MVVM.Model"
+        mc:Ignorable="d"
+        Title="StudentMW" Height="720" Width="1080"
+        xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        WindowStartupLocation="CenterScreen" AllowsTransparency="True"
+       
+        Background="Transparent" WindowStyle="None">
+   
+
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+        <local1:ByteArrayToImageSourceConverter x:Key="ByteArrayToImageSourceConverter" />
+    </Window.Resources>
+
+    <Window.DataContext>
+        <local:StudentMainWindowVM/>
+    </Window.DataContext>
+
+    <Border CornerRadius="30" Background="#EFF2F7" MouseDown="Border_MouseDown" MouseLeftButtonDown="Border_MouseLeftButtonDown">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+              
+            <Grid Margin="0,88,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+
+                <Border Grid.Row="1" Background="#231942" CornerRadius="30 0 0 30" Margin="0,-89,0,0">
+                    <DockPanel>
+
+
+                        <!--Menu Titles-->
+                        <TextBlock Text="STUDENT" FontFamily="arial" Foreground="#be95c4" FontSize="20" FontWeight="DemiBold" DockPanel.Dock="Top" Margin="30 50 0 2" TextAlignment="Left"/>
+                        <TextBlock Text="MANAGEMENT"  FontFamily="poppins" Foreground="#be95c4" FontSize="20" FontWeight="SemiBold" DockPanel.Dock="Top" Margin="30 1 0 3" TextAlignment="Left"/>
+                        <TextBlock Text="SYSTEM"  FontFamily="poppins" Foreground="#be95c4" FontSize="20" FontWeight="SemiBold" DockPanel.Dock="Top"  Margin="30 1 0 3" TextAlignment="Left"/>
+
+                        <!--Menu Seprator-->
+                        <Separator Margin="20 20 20 80" Background="White" DockPanel.Dock="Top" Height="0.8"/>
+
+                        <StackPanel DockPanel.Dock="Top" >
+                            <Button Style="{StaticResource menuButton}" Command="{Binding OpenAddStudentCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Icon:PackIconMaterial Kind="PlusBox" Style="{StaticResource menuButtonIcon}"/>
+                                    <TextBlock Text="Add Student" Foreground="White"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource menuButton}" Command="{Binding EditAddStudentCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Icon:PackIconMaterial Kind="AccountEdit" Style="{StaticResource menuButtonIcon}"/>
+                                    <TextBlock Text="Edit " Foreground="White"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource menuButton}" Command="{Binding DeleteCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Icon:PackIconMaterial Kind="Delete" Style="{StaticResource menuButtonIcon}"/>
+                                    <TextBlock Text="Delete " Foreground="White"/>
+                                </StackPanel>
+                            </Button>
+
+
+
+                            <Button Style="{StaticResource menuButton}"  Command="{Binding reloadCommand }" >
+                                <StackPanel Orientation="Horizontal">
+                                    <Icon:PackIconMaterial Kind="Reload" Style="{StaticResource menuButtonIcon}"/>
+                                    <TextBlock Text="Reload" Foreground="White"/>
+                                </StackPanel>
+                            </Button>
+
+
+
+                        </StackPanel>
+
+                        <Button Style="{StaticResource menuButton}" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Margin="15 0 15 20"
+                                Command="{Binding CloseCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <Icon:PackIconMaterial Kind="Close" Style="{StaticResource menuButtonIcon}"/>
+                                <TextBlock Text="Exit"/>
+                            </StackPanel>
+                        </Button>
+
+                    </DockPanel>
+                </Border>
+
+            </Grid>
+
+            <Grid Grid.Column="1" Margin="30 20 20 20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="382*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+
+
+
+
+
+
+                <TextBlock Text="STUDENTS" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="#231942" HorizontalAlignment="Left"/>
+
+
+
+
+                <Separator Height="10" Grid.Row="1" Background="#231942" Margin="0 65 0 10"/>
+
+
+
+                
+                <DataGrid Grid.Row="2" ItemsSource="{Binding Students}" SelectedItem="{Binding Std}"
+                          RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="membersDataGrid" Style="{DynamicResource DataGridStyle1}">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Image" Width="70" IsReadOnly="True" >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding Img, Converter={StaticResource ByteArrayToImageSourceConverter}}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="REG NO" Binding="{Binding StdID, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Width="auto"/>
+                        <DataGridTextColumn Header="First Name" Binding="{Binding FirstName,UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Width="auto"/>
+                        <DataGridTextColumn Header="Last Name" Binding="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Width="auto"/>
+                        <DataGridTextColumn Header="DOB" Binding="{Binding DateOfBirth, StringFormat='MM/dd/yyyy', UpdateSourceTrigger=PropertyChanged}"  IsReadOnly="True" Width="auto"/>
+                        <DataGridTextColumn Header="Phone Number" Binding="{Binding TelNo, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Width="auto"/>
+                        <DataGridTextColumn Header="Department" Binding="{Binding Dept, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Width="auto"/>
+                        <DataGridTextColumn Header="GPA" Binding="{Binding Gpa, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Width="auto"/>
+
+                        
+                    </DataGrid.Columns>
+                </DataGrid>
+
+               
+
+            </Grid>
+
+        </Grid>
+    </Border>
+</Window>
